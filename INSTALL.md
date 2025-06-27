@@ -20,7 +20,7 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/your-org/mkknebus.git
+git clone https://github.com/AlexeyEremin/mkknebus.git
 cd mkknebus
 ```
 
