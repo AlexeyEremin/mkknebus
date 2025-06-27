@@ -7,11 +7,14 @@ use App\Http\Requests\Activity\UpdateRequest;
 use App\Http\Resources\Activity\ActivityResource;
 use App\Http\Resources\Activity\ShowResource;
 use App\Models\Activity;
+use App\Services\ActivityService;
 
 class ActivityController extends Controller
 {
+    public function __construct(protected ActivityService $activityService) {}
+
     /**
-     * Display a listing of the resource.
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -19,7 +22,8 @@ class ActivityController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param StoreRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|object
      */
     public function store(StoreRequest $request)
     {
@@ -28,7 +32,8 @@ class ActivityController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param Activity $activity
+     * @return ShowResource
      */
     public function show(Activity $activity)
     {
@@ -36,16 +41,19 @@ class ActivityController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param UpdateRequest $request
+     * @param Activity $activity
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|object
      */
     public function update(UpdateRequest $request, Activity $activity)
     {
-        $activity->update($request->validated());
+        $activity = $this->activityService->update($activity, $request->validated());
         return response(['data' => ShowResource::make($activity)], 201);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Activity $activity
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Activity $activity)
     {
@@ -53,16 +61,22 @@ class ActivityController extends Controller
         return response()->noContent();
     }
 
+    /**
+     * @param Activity $activity
+     * @return ActivityResource
+     */
     public function organizations(Activity $activity)
     {
         return ActivityResource::make($activity);
     }
 
+    /**
+     * @param Activity $activity
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function search(Activity $activity)
     {
-        $activityIds = [$activity->id];
-        $activityIds = array_merge($activityIds, $activity->getIdsNesting());
-        $activities = Activity::with('organizations')->without('parent')->whereIn('id', $activityIds)->get();
+        $activities = $this->activityService->getActivityWithDescendants($activity);
         return ShowResource::collection($activities);
     }
 }

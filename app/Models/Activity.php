@@ -1,6 +1,19 @@
 <?php
-
 namespace App\Models;
+/**
+ * @OA\Schema(
+ *     schema="Activity",
+ *     title="Activity",
+ *     type="object",
+ *     required={"name"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Маркетинг"),
+ *     @OA\Property(property="parent_id", type="integer", nullable=true, example=null),
+ *     @OA\Property(property="nesting", type="integer", nullable=true, example=0),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 
 use Illuminate\Database\Eloquent\Model;
 

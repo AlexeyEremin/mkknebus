@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Building\SearchRequest;
 use App\Http\Requests\Organization\StoreRequest;
 use App\Http\Requests\Organization\UpdateRequest;
-use App\Http\Resources\Organization\ShowActivityResource;
+use App\Http\Resources\Organization\OrganizationWithActivitiesResource;
 use App\Http\Resources\Organization\ShowResource;
 use App\Models\Organization;
+use App\Services\OrganizationService;
 
 class OrganizationController extends Controller
 {
+    public function __construct(protected OrganizationService $organizationService) {}
+
     /**
-     * Display a listing of the resource.
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -20,19 +23,18 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param StoreRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|object
      */
     public function store(StoreRequest $request)
     {
-        $data = $request->validated();
-        $organization = Organization::create($data);
-        $organization->activities()->sync($data['activities']);
-
-        return response(['data' => ShowActivityResource::make($organization)], 201);
+        $organization = $this->organizationService->create($request->validated());
+        return response(['data' => OrganizationWithActivitiesResource::make($organization)], 201);
     }
 
     /**
-     * Display the specified resource.
+     * @param Organization $organization
+     * @return ShowResource
      */
     public function show(Organization $organization)
     {
@@ -40,22 +42,19 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param UpdateRequest $request
+     * @param Organization $organization
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|object
      */
     public function update(UpdateRequest $request, Organization $organization)
     {
-        $data = $request->validated();
-        $organization->update($data);
-        if(isset($data['activities']))
-            $organization->activities()->sync($data['activities']);
-
-        $organization = Organization::find($organization->id);
-
-        return response(['data' => ShowActivityResource::make($organization)], 201);
+        $organization = $this->organizationService->update($organization, $request->validated());
+        return response(['data' => OrganizationWithActivitiesResource::make($organization)], 201);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Organization $organization
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Organization $organization)
     {
@@ -63,6 +62,10 @@ class OrganizationController extends Controller
         return response()->noContent();
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function search(SearchRequest $request)
     {
         $organizations = Organization::query()->where('name', 'LIKE', '%' . $request->name . '%')->simplePaginate(20);

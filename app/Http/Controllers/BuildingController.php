@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Building\SearchDistanceRequest;
 use App\Http\Requests\Building\StoreRequest;
 use App\Http\Requests\Building\UpdateRequest;
-use App\Http\Resources\Building\OrganizationResource;
+use App\Http\Resources\Building\BuildingWithOrganizationsResource;
 use App\Http\Resources\Building\ShowResource;
 use App\Models\Building;
 use App\Models\Organization;
-use Illuminate\Support\Facades\DB;
+use App\Services\BuildingSearchService;
 
 class BuildingController extends Controller
 {
+    public function __construct(protected BuildingSearchService $buildingSearchService) {}
+
     /**
-     * Display a listing of the resource.
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -22,7 +24,8 @@ class BuildingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param StoreRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|object
      */
     public function store(StoreRequest $request)
     {
@@ -31,7 +34,8 @@ class BuildingController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param Building $building
+     * @return ShowResource
      */
     public function show(Building $building)
     {
@@ -39,7 +43,9 @@ class BuildingController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param UpdateRequest $request
+     * @param Building $building
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|object
      */
     public function update(UpdateRequest $request, Building $building)
     {
@@ -48,7 +54,8 @@ class BuildingController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Building $building
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Building $building)
     {
@@ -56,43 +63,37 @@ class BuildingController extends Controller
         return response()->noContent();
     }
 
+    /**
+     * @param Building $building
+     * @return BuildingWithOrganizationsResource
+     */
     public function organizations(Building $building)
     {
-        return OrganizationResource::make($building);
+        return BuildingWithOrganizationsResource::make($building);
     }
 
+    /**
+     * @param SearchDistanceRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\Response|object
+     */
     public function search(SearchDistanceRequest $request)
     {
-        if($request->type == Building::TYPE_RADIUS_SEARCH) {
-            $rawHaversine = '(6371 * acos(cos(radians(' . $request->latitude . ')) * cos(radians(latitude)) * cos(radians(longitude) - radians(' . $request->longitude . ')) + sin(radians(' . $request->latitude . ')) * sin(radians(latitude)))) as distance';
-            $buildings = Building::query()->select(
-                    [
-                        'id',
-                        DB::raw($rawHaversine)
-                    ]
-                )
-                ->having('distance', '<=', $request->radius)
-                ->get();
+        if ($request->type === Building::TYPE_RADIUS_SEARCH) {
+            $buildings = $this->buildingSearchService->findByRadius(
+                $request->latitude,
+                $request->longitude,
+                $request->radius
+            );
         } else {
-            $latitudeDistance = $request->radiusX / 111.0;
-            $longitudeDistance = $request->radiusY / (111.0 * deg2rad($request->latitude));
-            $latitudeBetween = [
-                ($request->latitude - $latitudeDistance),
-                ($request->latitude + $latitudeDistance),
-            ];
-            $longitudeBetween = [
-                ($request->longitude - $longitudeDistance),
-                ($request->longitude + $longitudeDistance),
-            ];
-
-            $buildings = Building::query()
-                ->select(['id'])
-                ->whereBetween('latitude', [$latitudeBetween[0], $latitudeBetween[1]])
-                ->whereBetween('longitude', [$longitudeBetween[0], $longitudeBetween[1]])
-                ->get();
+            $buildings = $this->buildingSearchService->findByRectangle(
+                $request->latitude,
+                $request->longitude,
+                $request->radiusX,
+                $request->radiusY
+            );
         }
 
-        if($buildings->count() == 0) {
+        if ($buildings->isEmpty()) {
             return response([]);
         }
 

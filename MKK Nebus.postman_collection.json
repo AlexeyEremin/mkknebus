@@ -1,0 +1,608 @@
+{
+	"info": {
+		"_postman_id": "bf758da5-4a60-4799-8fe4-ee44db70a969",
+		"name": "MKK Nebus",
+		"description": "Привет, незабудь вставить Bearer token в Authorization, чтобы у всех сразу все работало.\n\nВ переменной Variables можно поменять хосты, щас сделаны для Docker контейнера.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6563743"
+	},
+	"item": [
+		{
+			"name": "Activity CRUD and additionals",
+			"item": [
+				{
+					"name": "Get All Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/activity",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test 4\",\n    \"parent_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/activity",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test 4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/activity/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get first",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"longitude\": 1.0009,\n    \"latitude\": 1.293\n}"
+						},
+						"url": {
+							"raw": "{{host}}/activity/3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/activity/15",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search activity with nesting",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/activity/1/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity",
+								"1",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all organization through Activity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/activity/5/organizations",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity",
+								"5",
+								"organizations"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Standard CRUD operation"
+		},
+		{
+			"name": "Building CRUD and additionals",
+			"item": [
+				{
+					"name": "Get All Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/building",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"longitude\": 1.0009,\n    \"latitude\": 1.293\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/building",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get first",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"longitude\": 1.0009,\n    \"latitude\": 1.293\n}"
+						},
+						"url": {
+							"raw": "{{host}}/building/10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"longitude\": 1.0009,\n    \"latitude\": 1.293\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/building/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/building/10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search building",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "SuperSecretStaticKey123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"latitude\": 1.9,\n    \"longitude\": 1.0,\n    \"type\": \"rectangle\",\n    \"radiusX\": 100.0,\n    \"radiusY\": 100.0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/building/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all organization in Builds",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/building/1/organizations",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"building",
+								"1",
+								"organizations"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Standard CRUD operation"
+		},
+		{
+			"name": "Organization CRUD and additionals",
+			"item": [
+				{
+					"name": "Get All Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/organization",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"phone\": [\"88005553535\", \"222-22-22\", \"330-09-00\"],\n    \"building_id\": 8,\n    \"activities\": [2,3,6]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/organization",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get first",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"longitude\": 1.0009,\n    \"latitude\": 1.293\n}"
+						},
+						"url": {
+							"raw": "{{host}}/organization/10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Building\",\n    \"phone\": [\"88005553535\", \"222-22-22\", \"330-09-00\"],\n    \"building_id\": 8,\n    \"activities\": [2,1,6]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/organization/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/organization/10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search building through name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/organization/search?name=te",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "te"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Standard CRUD operation"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "SuperSecretStaticKey123",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Building;
 use App\Models\Building;
 use App\Rules\FloatRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\In;
+use Illuminate\Validation\Rule;
 
 class SearchDistanceRequest extends FormRequest
 {
@@ -27,7 +27,7 @@ class SearchDistanceRequest extends FormRequest
         return [
             'latitude' => ['required', new FloatRule],
             'longitude' => ['required', new FloatRule],
-            'type' => ['required', new In([Building::TYPE_RADIUS_SEARCH, Building::TYPE_RECTANGLE_SEARCH])],
+            'type' => ['required', Rule::in([Building::TYPE_RADIUS_SEARCH, Building::TYPE_RECTANGLE_SEARCH])],
             'radius' => ['required_if:type,'.Building::TYPE_RADIUS_SEARCH, new FloatRule],
             'radiusX' => ['required_if:type,'.Building::TYPE_RECTANGLE_SEARCH, new FloatRule],
             'radiusY' => ['required_if:type,'.Building::TYPE_RECTANGLE_SEARCH, new FloatRule],

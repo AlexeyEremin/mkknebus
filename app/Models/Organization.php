@@ -1,6 +1,19 @@
 <?php
 
 namespace App\Models;
+/**
+ * @OA\Schema(
+ *     schema="Organization",
+ *     title="Organization",
+ *     type="object",
+ *     required={"name", "building_id"},
+ *     @OA\Property(property="id", type="integer", example=42),
+ *     @OA\Property(property="name", type="string", example="ООО Пример"),
+ *     @OA\Property(property="building_id", type="integer", example=1),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

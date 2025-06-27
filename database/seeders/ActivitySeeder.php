@@ -17,8 +17,8 @@ class ActivitySeeder extends Seeder
             [
                 'name' => 'Еда',
                 'children' => [
-                    ['name' => 'Мясная продукция'],
-                    ['name' => 'Молочная продукция']
+                    ['name' => 'Мясная продукция', 'nesting' => 1],
+                    ['name' => 'Молочная продукция', 'nesting' => 1]
                 ]
             ],
             [

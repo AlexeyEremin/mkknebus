@@ -17,8 +17,8 @@ class OrganizationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'phone' => $this->faker->phoneNumber(),
+            'name' => $this->faker->company(),
+            'phone' => [$this->faker->phoneNumber],
         ];
     }
 }
